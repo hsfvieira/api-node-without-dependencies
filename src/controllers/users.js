@@ -19,9 +19,11 @@ export function view(req, res) {
 
 export function create(req, res) {
     app.executeBody(req, body => {
-        dados.push(JSON.parse(body))
+        const bodyJson = JSON.parse(body)
+        dados.push(bodyJson)
         res.statusCode = 201
         res.setHeader('Content-type', 'application/json')
+        res.write(bodyJson)
         res.end()
     })
 }
