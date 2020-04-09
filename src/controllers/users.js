@@ -1,19 +1,15 @@
 import dados from '../../database/dados.js'
 
 export function index(req, res) {
-    res.setHeader('Content-type', 'application/json')
-    res.write(JSON.stringify(dados))
-    res.end()
+    res.json(dados)
 }
 
 export function view(req, res) {
     const { id } = req.params
-    res.setHeader('Content-type', 'application/json')
     const dadosFiltrados = dados.filter(dado => 
         dado.id == id
     )
-    res.write(JSON.stringify(dadosFiltrados))
-    res.end()
+    res.json(dadosFiltrados)
 }
 
 export function create(req, res) {

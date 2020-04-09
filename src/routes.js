@@ -1,4 +1,4 @@
-import * as app from './http/index.js'
+import * as app from 'hsfvieira-http'
 import * as user from './controllers/users.js'
 
 app.get('/users', user.index)
