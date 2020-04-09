@@ -1,4 +1,4 @@
-import * as http from '../src/http.js'
+import * as http from '../index.js'
 
 function getTest() {
     http.get('/users', (req, res) => {
