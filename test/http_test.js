@@ -1,7 +1,7 @@
 import * as http from '../src/http.js'
 
 function getTest() {
-    http.get(/\/users\/?/, (req, res) => {
+    http.get('/users', (req, res) => {
         res.end()
     })
     if(http.routes.GET.length == 1) {
@@ -10,7 +10,7 @@ function getTest() {
 }
 
 function postTest() {
-    http.post(/\/users\/?/, (req, res) => {
+    http.post('/users', (req, res) => {
         res.end()
     })
     if(http.routes.POST.length == 1) {
@@ -23,7 +23,19 @@ function executeTest() {
 }
 
 function getParamTest() {
-    console.log(http.getParam({url: '/users/4'}, 'id'))
+    
+}
+
+function parsePathTest() {
+    console.log(http.parsePath('/users/'))
+    console.log(http.parsePath('/users'))
+    console.log(http.parsePath('/users/:id'))
+    console.log(http.parsePath('/users/:id/'))
+    console.log(http.parsePath('/users/:id/nome'))
+    console.log(http.parsePath('/users/:id/nome/'))
+
+    const regexParams = http.parsePath('/users/:id/')
+    console.log('/users/id'.match(regexParams))
 }
 
 
@@ -31,3 +43,4 @@ getTest()
 postTest()
 executeTest()
 getParamTest()
+parsePathTest()

@@ -1,5 +1,4 @@
 import dados from '../../database/dados.js'
-import * as app from '../http.js'
 
 export function index(req, res) {
     res.setHeader('Content-type', 'application/json')
@@ -8,22 +7,18 @@ export function index(req, res) {
 }
 
 export function view(req, res) {
-    const urlParam = app.getParam(req, 'id')
+    const { id } = req.params
     res.setHeader('Content-type', 'application/json')
     const dadosFiltrados = dados.filter(dado => 
-        dado.id == urlParam.id
+        dado.id == id
     )
     res.write(JSON.stringify(dadosFiltrados))
     res.end()
 }
 
 export function create(req, res) {
-    app.executeBody(req, body => {
-        const bodyJson = JSON.parse(body)
-        dados.push(bodyJson)
-        res.statusCode = 201
-        res.setHeader('Content-type', 'application/json')
-        res.write(JSON.stringify(bodyJson))
-        res.end()
-    })
+    dados.push(req.body)
+    res.statusCode = 201
+    res.setHeader('Content-type', 'application/json')
+    res.end()
 }
