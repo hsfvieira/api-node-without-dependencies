@@ -1,10 +1,16 @@
 import dados from '../../database/dados.js'
+import { selectAll, insertOne, selectByFirstName } from '../models/users.js'
 
 export function index(req, res) {
-    if(req.query && req.query.nome) {
-        res.json(dados.filter(dado => dado.nome.match(RegExp(`${req.query.nome}`))))
+    
+    if(req.query.first_name) {
+        selectByFirstName(req.query.first_name, (data) => {
+            res.json(data)
+        })
     } else {
-        res.json(dados)
+        selectAll((data) => {
+            res.json(data)
+        })    
     }
 }
 
@@ -16,7 +22,8 @@ export function view(req, res) {
     res.json(dadosFiltrados)
 }
 
-export function create(req, res) {
+export async function create(req, res) {
+    await insertOne(req.body)
     dados.push(req.body)
     res.statusCode = 201
     res.setHeader('Content-type', 'application/json')
