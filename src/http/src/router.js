@@ -17,6 +17,8 @@ function parsePath(path) {
     return RegExp(`${pathString}\/?$`)
 }
 
+
+
 function registerRoute(path, fn, method) {
     const regexPath = parsePath(path)
     routes[method].push({path: regexPath, fn})
@@ -28,4 +30,16 @@ export function get(path, fn) {
 
 export function post(path, fn) {
     registerRoute(path, fn, 'POST')
+}
+
+export function filterRoute(req) {
+    const filteredRoute = routes[req.method].filter(route => 
+        req.path.match(route.path)
+    )
+    if(filteredRoute.length != 0) {
+        return filteredRoute[0]
+    } else {
+        return false
+    }
+    
 }

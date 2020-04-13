@@ -1,7 +1,11 @@
 import dados from '../../database/dados.js'
 
 export function index(req, res) {
-    res.json(dados)
+    if(req.query && req.query.nome) {
+        res.json(dados.filter(dado => dado.nome.match(RegExp(`${req.query.nome}`))))
+    } else {
+        res.json(dados)
+    }
 }
 
 export function view(req, res) {
