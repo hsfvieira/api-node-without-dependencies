@@ -1,0 +1,1 @@
+export const uri = 'postgres://rulavzpmkknegt:dca59b94fd3bfe746b7a210774f0a5335456b95c869ddc2097bba459016a2d5a@ec2-54-159-112-44.compute-1.amazonaws.com:5432/defqf5rrs2u08t'
