@@ -16,7 +16,7 @@ function send(res) {
 function html(res) {
     return (html) => {
         res.setHeader('Content-type', 'text/html')
-        res.write(text)
+        res.write(html)
         res.end()
     }
 }
