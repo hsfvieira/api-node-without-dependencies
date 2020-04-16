@@ -1,31 +1,28 @@
-import dados from '../../database/dados.js'
-import { selectAll, insertOne, selectByFirstName } from '../models/users.js'
+import { selectAll, insert, selectFromFirstName, selectFromID } from '../models/users.js'
 
-export function index(req, res) {
-    
+export async function index(req, res) {
     if(req.query.first_name) {
-        selectByFirstName(req.query.first_name, (data) => {
-            res.json(data)
-        })
+        const { first_name } = req.query
+        const data = await selectFromFirstName(first_name)
+
+        res.json(data)
     } else {
-        selectAll((data) => {
-            res.json(data)
-        })    
+        const data = await selectAll()
+        res.json(data)
     }
 }
 
-export function view(req, res) {
+export async function view(req, res) {
     const { id } = req.params
-    const dadosFiltrados = dados.filter(dado => 
-        dado.id == id
-    )
-    res.json(dadosFiltrados)
+    const data = await selectFromID(id)
+
+    res.json(data)
 }
 
 export async function create(req, res) {
-    await insertOne(req.body)
-    dados.push(req.body)
+    const data = req.body
+    await insert(data)
+
     res.statusCode = 201
-    res.setHeader('Content-type', 'application/json')
     res.end()
 }

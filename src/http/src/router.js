@@ -4,6 +4,9 @@ export const routes = {
 }
 
 function parsePath(path) {
+    if(path.match(/^\/$/g)) {
+        return /^\/$/
+    }
     const matchPath = path.match(/\/([^\/]+)/g)
     const treatMatchPath = matchPath.map(pathPart => {
         const regexpParam = /\/:(.+)/
@@ -14,7 +17,7 @@ function parsePath(path) {
         return pathPart
     })
     const pathString = treatMatchPath.join('')
-    return RegExp(`${pathString}\/?$`)
+    return RegExp(`^${pathString}\/?$`)
 }
 
 

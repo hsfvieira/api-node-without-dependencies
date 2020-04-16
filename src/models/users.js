@@ -1,55 +1,41 @@
-import fs from 'fs'
-import { connect } from '../../database/pg.js'
+import connect from '../../database/pg.js'
+import usersQueries from '../../database/queries/users.js'
 
-export async function selectAll(fn) {
+export async function selectAll() {
     const client = await connect()
-    const querySelectAll = './database/queries/users/SELECT_USERS.sql'
-    fs.readFile(querySelectAll, 'utf8', async (err, data) => {
-        if(err) {
-            return err
-        }
-        const res = await client.query(data)
-        fn(res.rows)
-        await client.end()
-    })
+    const { rows: res } = await client.query(usersQueries.selectAll)
+
+    await client.end()
+
+    return res
 }
 
-export async function selectByFirstName(value, fn) {
+export async function selectFromFirstName(value) {
     const client = await connect()
-    const querySelectAll = './database/queries/users/SELECT_FROM_FIRST_NAME_USERS.sql'
-    fs.readFile(querySelectAll, 'utf8', async (err, data) => {
-        if(err) {
-            return err
-        }
-        const res = await client.query(data, [`%${value}%`])
-        fn(res.rows)
-        await client.end()
-    })
+    const { rows: res } = await client.query(
+        usersQueries.selectFromFirstName,
+        [`%${value}%`]
+    )
+
+    await client.end()
+
+    return res
 }
 
-export async function selectOne(value, fn) {
+export async function selectFromID(value) {
     const client = await connect()
-    const querySelectAll = './database/queries/users/SELECT_ONE_USERS.sql'
-    fs.readFile(querySelectAll, 'utf8', async (err, data) => {
-        if(err) {
-            return err
-        }
-        const res = await client.query(data, [value])
-        fn(res.rows)
-        await client.end()
-    })
+    const { rows: res } = await client.query(usersQueries.selectFromID, [value])
+
+    await client.end()
+
+    return res
 }
 
-export async function insertOne(newObj, fn) {
+export async function insert(newObj) {
     const client = await connect()
-    const queryInsertOne = './database/queries/users/INSERT_USERS.sql'
-    fs.readFile(queryInsertOne, 'utf8', async(err, data) => {
-        if(err) {
-            return err
-        }
-        const values = [newObj.first_name, newObj.last_name]
-        const res = await client.query(data, values)
-        fn(res)
-        await client.end()
-    })
+
+    const values = [newObj.first_name, newObj.last_name]
+
+    await client.query(usersQueries.insert, values)
+    await client.end()
 }

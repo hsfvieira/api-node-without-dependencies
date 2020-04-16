@@ -7,4 +7,8 @@ app.get('/users/:id', user.view)
 
 app.post('/users/', user.create)
 
+app.get('/', (req, res) => {
+    res.send('teste')
+})
+
 export default app
