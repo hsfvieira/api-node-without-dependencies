@@ -1,20 +1,35 @@
-import { selectAll, selectFromFirstName, selectFromID, insert, updateOne, deleteOne } from '../models/users.js'
+import { 
+    count, 
+    countFromFirstName,
+    selectAll,
+    selectFromFirstName, 
+    selectFromID, 
+    insert, 
+    updateOne, 
+    deleteOne 
+} from '../models/users.js'
 
 export async function index(req, res) {
+    const { page } = !req.query.page ? { page: 1 } : req.query
+
     if(req.query.first_name) {
         const { first_name } = req.query
-        const data = await selectFromFirstName(first_name)
+        const totalLines = await countFromFirstName(first_name)
+        const data = await selectFromFirstName(first_name, (page - 1) * 10)
 
+        res.setHeader('X-Total-Count', totalLines)
         res.json(data)
     } else {
-        const data = await selectAll()
+        const totalLines = await count()
+        const data = await selectAll((page - 1) * 10)
+        res.setHeader('X-Total-Count', totalLines)
         res.json(data)
     }
 }
 
 export async function view(req, res) {
     const { id } = req.params
-    const data = await selectFromID(id)
+    const [ data ] = await selectFromID(id)
 
     res.json(data)
 }

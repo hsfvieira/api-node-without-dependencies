@@ -1,20 +1,38 @@
 import connect from '../../database/pg.js'
 import usersQueries from '../../database/queries/users.js'
 
-export async function selectAll() {
+export async function count() {
     const client = await connect()
-    const { rows: res } = await client.query(usersQueries.selectAll)
+    const { rows: [{ count: res }] } = await client.query(usersQueries.countTotal)
 
     await client.end()
 
     return res
 }
 
-export async function selectFromFirstName(value) {
+export async function countFromFirstName(value) {
+    const client = await connect()
+    const { rows: [{ count: res }] } = await client.query(usersQueries.countFromFirstName, [`%${value}%`])
+
+    await client.end()
+
+    return res
+}
+
+export async function selectAll(value) {
+    const client = await connect()
+    const { rows: res } = await client.query(usersQueries.selectAll, [value])
+
+    await client.end()
+
+    return res
+}
+
+export async function selectFromFirstName(value, pageOffset) {
     const client = await connect()
     const { rows: res } = await client.query(
         usersQueries.selectFromFirstName,
-        [`%${value}%`]
+        [`%${value}%`, pageOffset]
     )
 
     await client.end()
