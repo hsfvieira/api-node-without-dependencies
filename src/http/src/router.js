@@ -35,6 +35,14 @@ export function post(path, fn) {
     registerRoute(path, fn, 'POST')
 }
 
+export function put(path, fn) {
+    registerRoute(path, fn, 'PUT')
+}
+
+export function del(path, fn) {
+    registerRoute(path, fn, 'DELETE')
+}
+
 export function filterRoute(req) {
     const filteredRoute = routes[req.method].filter(route => 
         req.path.match(route.path)
