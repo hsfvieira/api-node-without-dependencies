@@ -1,6 +1,8 @@
 export const routes = { 
     GET: [],
-    POST: []
+    POST: [],
+    PUT: [],
+    DELETE: []
 }
 
 function parsePath(path) {

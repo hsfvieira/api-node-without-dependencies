@@ -39,3 +39,19 @@ export async function insert(newObj) {
     await client.query(usersQueries.insert, values)
     await client.end()
 }
+
+export async function updateOne(id, newObj) {
+    const client = await connect()
+
+    const values = [newObj.first_name, newObj.last_name, id]
+
+    await client.query(usersQueries.update, values)
+    await client.end()
+}
+
+export async function deleteOne(id) {
+    const client = await connect()
+
+    await client.query(usersQueries.delete, [id])
+    await client.end()
+}

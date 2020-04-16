@@ -1,1 +1,1 @@
-export { execute, get, post, routes } from './src/index.js'
+export { execute, get, post, put, del, routes } from './src/index.js'

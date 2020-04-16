@@ -3,7 +3,7 @@ import { injectData, getPath } from './request.js'
 import { filterRoute } from './router.js'
 import { injectFunctions } from './response.js'
 
-export { routes, get, post } from './router.js'
+export { routes, get, post, put, del } from './router.js'
 
 export function execute(request, response) {
     request.path = getPath(request)

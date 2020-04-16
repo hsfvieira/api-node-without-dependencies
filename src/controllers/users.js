@@ -1,4 +1,4 @@
-import { selectAll, insert, selectFromFirstName, selectFromID } from '../models/users.js'
+import { selectAll, selectFromFirstName, selectFromID, insert, updateOne, deleteOne } from '../models/users.js'
 
 export async function index(req, res) {
     if(req.query.first_name) {
@@ -24,5 +24,22 @@ export async function create(req, res) {
     await insert(data)
 
     res.statusCode = 201
+    res.end()
+}
+
+export async function update(req, res) {    
+    const { id } = req.params
+    const newObj = req.body
+
+    await updateOne(id, newObj)
+
+    res.end()
+}
+
+export async function del(req, res) {
+    const { id } = req.params
+    
+    await deleteOne(id)
+
     res.end()
 }
