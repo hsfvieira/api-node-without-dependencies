@@ -29,9 +29,13 @@ export async function index(req, res) {
 
 export async function view(req, res) {
     const { id } = req.params
-    const [ data ] = await selectFromID(id)
+    const data = await selectFromID(id)
 
-    res.json(data)
+    if(data) {
+        res.json(data)
+    } else {
+        res.json({})
+    }
 }
 
 export async function create(req, res) {
@@ -46,15 +50,27 @@ export async function update(req, res) {
     const { id } = req.params
     const newObj = req.body
 
-    await updateOne(id, newObj)
+    const result = await updateOne(id, newObj)
 
+    if(!result) {
+        res.statusCode = 404
+    } else {
+        res.statusCode = 204
+    }
+    
     res.end()
 }
 
 export async function del(req, res) {
     const { id } = req.params
     
-    await deleteOne(id)
+    const result = await deleteOne(id)
 
+    if(!result) {
+        res.statusCode = 404
+    } else {
+        res.statusCode = 204
+    }
+    
     res.end()
 }

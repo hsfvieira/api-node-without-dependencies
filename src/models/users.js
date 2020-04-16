@@ -42,8 +42,8 @@ export async function selectFromFirstName(value, pageOffset) {
 
 export async function selectFromID(value) {
     const client = await connect()
-    const { rows: res } = await client.query(usersQueries.selectFromID, [value])
-
+    const { rows: [ res ] } = await client.query(usersQueries.selectFromID, [`${value}`])
+    
     await client.end()
 
     return res
@@ -60,16 +60,19 @@ export async function insert(newObj) {
 
 export async function updateOne(id, newObj) {
     const client = await connect()
-
     const values = [newObj.first_name, newObj.last_name, id]
+    const { rowCount: res }  = await client.query(usersQueries.update, values)
 
-    await client.query(usersQueries.update, values)
     await client.end()
+
+    return res
 }
 
 export async function deleteOne(id) {
     const client = await connect()
-
-    await client.query(usersQueries.delete, [id])
+    const { rowCount: res } = await client.query(usersQueries.delete, [id])
+    
     await client.end()
+
+    return res
 }
