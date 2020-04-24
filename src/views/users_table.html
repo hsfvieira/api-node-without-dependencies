@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #teste {
+            border-collapse: collapse;
+        }   
+
+        #teste th, #teste td {
+            border: 1px solid black;
+        } 
+
+        .linha {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <table id="teste">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+            </tr>
+        </thead>
+    </table>
+    <div class="linha">
+        <p>Total de linhas: <span id="count"></span></p>
+    </div>
+    <div class="linha">
+        <button><<<</button>
+        <button>>>></button>
+    </div>
+    <script type="module">
+        async function getData() {
+            const dados = await fetch('/users')
+            if(dados.ok) {
+                const dadosJson = await dados.json()
+                return {
+                    data: dadosJson,
+                    count: dados.headers.get('X-Total-Count')
+                }
+            }
+        }
+
+        function insertRows(data) {
+            const table = document.querySelector('#teste')
+            data.map(singleData => {
+                const newTableRow = table.insertRow(table.rows.length)
+                newTableRow.insertCell(0).innerHTML = singleData.id  
+                newTableRow.insertCell(1).innerHTML = singleData.first_name  
+                newTableRow.insertCell(2).innerHTML = singleData.last_name  
+            })
+        }
+
+        function insertCount(data) {
+            document.querySelector('#count').innerHTML = data
+        }
+
+        function clearTable() {
+            const table = document.querySelector('#teste')
+            
+        }
+
+        async function start() {
+            const { data, count } = await getData()
+            insertRows(data)
+            insertCount(count)
+            //clearTable()
+        }
+
+        start()
+    </script>
+</body>
+</html>
